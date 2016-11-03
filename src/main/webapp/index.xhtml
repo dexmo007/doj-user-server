@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+<h:head>
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css"/>
+    <script type="text/javascript" src="semantic-ui/semantic.min.js"></script>
+    <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+</h:head>
+<h:body>
+    <div class="ui input">
+        <h1>Find User</h1>
+        <br/>
+        <h:form>
+            <table class="ui celled table">
+                <tbody>
+                <tr>
+                    <td>User-ID</td>
+                    <td><h:inputText size="10" value="#{searchApi.user.id}"/></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><h:inputText size="10" value="#{searchApi.user.pw}"/></td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td><h:inputText size="10" value="#{searchApi.user.firstName}"/></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><h:inputText size="10" value="#{searchApi.user.lastName}"/></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><h:inputText size="10" value="#{searchApi.user.email}"/></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        <h:commandButton class="ui primary button" value="Search"
+                                         action="#{searchApi.search()}">
+                            <f:param name="skipValidation" value="true"/>
+                        </h:commandButton>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </h:form>
+
+    </div>
+    <div class="ui input">
+        <h:form>
+            <c:if test="#{searchApi.searchResults != null}">
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>User-ID</th>
+                        <th>Password</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="i" items="#{searchApi.searchResults}">
+                        <tr>
+                            <td>#{i.id}</td>
+                            <td>#{i.pw}</td>
+                            <td>#{i.firstName}</td>
+                            <td>#{i.lastName}</td>
+                            <td>#{i.email}</td>
+                            <td><h:commandButton class="ui negative button" value="Delete"
+                                                 action="#{webApi.deleteUser(i.id)}">
+                                <f:param name="skipValidation" value="true"/>
+                            </h:commandButton></td>
+                        </tr>
+                    </c:forEach>
+                    <tr>
+                        <td><h:commandButton class="ui negative button" value="Delete"
+                                             action="#{webApi.deleteUser('dexmo')}"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </c:if>
+        </h:form>
+    </div>
+    <br/>
+    <div class="ui input">
+        <h1>Users</h1>
+        <br/>
+        <h:form>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>User-ID</th>
+                    <th>Password</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody id="users">
+                <c:forEach var="i" items="#{webApi.listUsers()}">
+                    <tr>
+                        <td>#{i.id}</td>
+                        <td>#{i.pw}</td>
+                        <td>#{i.firstName}</td>
+                        <td>#{i.lastName}</td>
+                        <td>#{i.email}</td>
+                        <td><h:commandButton class="ui negative button" value="Delete"
+                                             action="#{webApi.deleteUser(i.id)}">
+                            <f:param name="skipValidation" value="true"/>
+                        </h:commandButton></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th><h:inputText size="10" value="#{addApi.user.id}">
+                        <f:validator binding="#{idValidator}"/>
+                    </h:inputText></th>
+                    <th><h:inputText size="10" value="#{addApi.user.pw}">
+                        <f:validator validatorId="notEmptyValidator"/>
+                    </h:inputText></th>
+                    <th><h:inputText size="10" value="#{addApi.user.firstName}">
+                        <f:validator validatorId="notEmptyValidator"/>
+                    </h:inputText></th>
+                    <th><h:inputText size="10" value="#{addApi.user.lastName}">
+                        <f:validator validatorId="notEmptyValidator"/>
+                    </h:inputText></th>
+                    <th><h:inputText size="20" value="#{addApi.user.email}">
+                        <f:validator validatorId="emailValidator"/>
+                    </h:inputText></th>
+                    <th><h:commandButton class="ui primary button" value="Add" action="#{addApi.performAdding}"/></th>
+                </tr>
+                </tfoot>
+            </table>
+        </h:form>
+    </div>
+</h:body>
+<!--<script type="text/javascript">-->
+<!--$(document).ready(function () {-->
+<!--$.getJSON("/doj-users/api/admin/all", function (data) {-->
+<!--$.each(data, function (index, user) {-->
+<!--$("#users").append("<tr><td>" + user.id + "</td><td>" + user.pw + "</td></tr>")-->
+<!--})-->
+<!--})-->
+<!--})-->
+<!--</script>-->
+</html>

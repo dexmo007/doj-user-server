@@ -1,0 +1,1 @@
+CREATE TABLE doj_users(id VARCHAR(50) PRIMARY KEY, pw VARCHAR(50), firstName VARCHAR(50), lastName VARCHAR(50), email VARCHAR(50) )
